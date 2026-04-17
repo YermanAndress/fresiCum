@@ -1,52 +1,48 @@
 ---
-import { ChevronLeft, ChevronRight, Heart } from "lucide-astro";
 import { Icon } from 'astro-icon/components';
 const { letters } = Astro.props;
 ---
 
-<div class="letter-book-container relative w-full max-w-6xl mx-auto" data-letters={JSON.stringify(letters)}>
+<div class="letter-book-container relative w-full max-w-6xl mx-auto px-2 md:px-0" data-letters={JSON.stringify(letters)}>
   
   <div class="absolute inset-0 bg-purple-500/5 rounded-[30px] blur-3xl transform translate-y-12 scale-95 pointer-events-none"></div>
 
-  <div class="relative aspect-[16/11] bg-white rounded-2xl shadow-[0_20px_70px_-10px_rgba(100,50,150,0.15)] border border-purple-100 overflow-hidden">
+  <div class="relative min-h-[550px] md:aspect-[16/11] bg-white rounded-2xl shadow-[0_20px_70px_-10px_rgba(100,50,150,0.15)] border border-purple-100 overflow-hidden">
     
-    <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-purple-500/5 via-purple-500/[0.02] to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-purple-500/5 via-purple-500/[0.02] to-transparent z-10 pointer-events-none"></div>
     
-    <div id="page-content" class="absolute inset-0 p-10 md:p-16 flex flex-col transition-all duration-500 ease-out">
+    <div id="page-content" class="absolute inset-0 p-6 md:p-16 flex flex-col transition-all duration-500 ease-out">
       
-      <div class="mb-10 pl-10">
-        <p id="page-counter" class="text-xs text-purple-400 font-medium tracking-[0.2em] uppercase"></p>
-        <h2 id="letter-title" class="text-3xl md:text-4xl font-normal text-purple-950 mt-3 mb-2" style="font-family: var(--font-cursive);"></h2>
-        <p id="letter-date" class="text-sm text-purple-300 font-light"></p>
+      <div class="mb-4 md:mb-8 pl-4 md:pl-10">
+        <p id="page-counter" class="text-[10px] md:text-xs text-purple-400 font-medium tracking-[0.2em] uppercase"></p>
+        <h2 id="letter-title" class="text-2xl md:text-4xl font-normal text-purple-950 mt-2 mb-1" style="font-family: var(--font-cursive);"></h2>
+        <p id="letter-date" class="text-xs md:text-sm text-purple-300 font-light"></p>
       </div>
       
-      <div id="letter-body" class="flex-1 flex items-center justify-center pl-10">
+      <div id="letter-body" class="flex-1 flex flex-col items-center justify-center pl-4 md:pl-10 gap-4 md:gap-6 overflow-y-auto">
         </div>
 
-      <div class="absolute bottom-8 left-0 right-0 text-center pointer-events-none">
-        <span id="page-number-footer" class="text-xs text-purple-300 tracking-widest"></span>
+      <div class="absolute bottom-4 md:bottom-8 left-0 right-0 text-center pointer-events-none">
+        <span id="page-number-footer" class="text-[10px] md:text-xs text-purple-300 tracking-widest"></span>
       </div>
     </div>
 
-    <button id="prev-btn" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/60 hover:bg-white border border-purple-100 flex items-center justify-center text-purple-400 hover:text-purple-600 shadow-sm hover:shadow-md transition-all disabled:opacity-20 disabled:pointer-events-none">
+    <button id="prev-btn" class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/80 md:bg-white/60 border border-purple-100 flex items-center justify-center text-purple-400 shadow-sm disabled:opacity-0 transition-all">
       <Icon name="lucide:chevron-left" class="w-5 h-5" />
     </button>
-    <button id="next-btn" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/60 hover:bg-white border border-purple-100 flex items-center justify-center text-purple-400 hover:text-purple-600 shadow-sm hover:shadow-md transition-all disabled:opacity-20 disabled:pointer-events-none">
+    <button id="next-btn" class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/80 md:bg-white/60 border border-purple-100 flex items-center justify-center text-purple-400 shadow-sm disabled:opacity-0 transition-all">
       <Icon name="lucide:chevron-right" class="w-5 h-5" />
     </button>
   </div>
 </div>
 
 <script>
-  // 1. Usamos una aserción de tipo (as HTMLElement) para asegurar que el contenedor existe
   const container = document.querySelector('.letter-book-container') as HTMLElement;
   
-  // Verificación de seguridad para el contenedor
   if (container && container.dataset.letters) {
     const letters = JSON.parse(container.dataset.letters);
     let currentIndex = 0;
 
-    // 2. Tipamos los elementos del DOM para acceder a propiedades como .style o .textContent
     const content = document.getElementById('page-content') as HTMLDivElement;
     const title = document.getElementById('letter-title') as HTMLHeadingElement;
     const date = document.getElementById('letter-date') as HTMLParagraphElement;
@@ -54,14 +50,13 @@ const { letters } = Astro.props;
     const body = document.getElementById('letter-body') as HTMLDivElement;
     const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement;
     const nextBtn = document.getElementById('next-btn') as HTMLButtonElement;
+    const footerPage = document.getElementById('page-number-footer') as HTMLSpanElement;
 
-    // 3. Definimos tipos para los parámetros (number y string)
     function updatePage(index: number, direction: 'next' | 'prev') {
       if (!content || !title || !body) return;
 
-      // Animación de salida
       content.style.opacity = '0';
-      content.style.transform = direction === 'next' ? 'rotateY(-20deg)' : 'rotateY(20deg)';
+      content.style.transform = direction === 'next' ? 'translateX(-10px)' : 'translateX(10px)';
 
       setTimeout(() => {
         currentIndex = index;
@@ -70,28 +65,39 @@ const { letters } = Astro.props;
         counter.textContent = `Carta ${currentIndex + 1} de ${letters.length}`;
         title.textContent = letter.title;
         date.textContent = letter.date;
+        footerPage.textContent = `— ${currentIndex + 1} —`;
+
+        // Construcción del contenido mezclando imagen y mensaje
+        let htmlContent = '';
         
         if (letter.imageUrl) {
-          body.innerHTML = `<img src="${letter.imageUrl}" class="max-h-[600px] rounded-lg shadow-md border-4 border-white rotate-[-1deg]" />`;
+          htmlContent += `
+            <div class="relative w-full flex flex-col items-center gap-4">
+              <img src="${letter.imageUrl}" class="max-h-[350px] md:max-h-[400px] lg:max-h-[500px] w-auto rounded-lg shadow-md border-2 md:border-4 border-white rotate-[-1deg] object-contain" />
+              ${letter.message ? `
+                <p class="text-purple-800/80 text-center italic text-base md:text-xl px-4 md:px-10 leading-relaxed" style="font-family: var(--font-cursive);">
+                  "${letter.message}"
+                </p>
+              ` : ''}
+            </div>
+          `;
         } else {
-          body.innerHTML = `<p class="italic text-slate-500 text-center" style="font-family: var(--font-cursive);">${letter.message || ''}</p>`;
+          htmlContent = `<p class="italic text-purple-900 text-center text-xl md:text-3xl px-6" style="font-family: var(--font-cursive);">${letter.message || ''}</p>`;
         }
 
-        // Estado botones
+        body.innerHTML = htmlContent;
+
         if (prevBtn) prevBtn.disabled = currentIndex === 0;
         if (nextBtn) nextBtn.disabled = currentIndex === letters.length - 1;
 
-        // Animación de entrada
         content.style.opacity = '1';
-        content.style.transform = 'rotateY(0deg)';
+        content.style.transform = 'translateX(0)';
       }, 300);
     }
 
-    // 4. Añadimos event listeners con verificaciones opcionales
     prevBtn?.addEventListener('click', () => updatePage(currentIndex - 1, 'prev'));
     nextBtn?.addEventListener('click', () => updatePage(currentIndex + 1, 'next'));
 
-    // Inicializar
     updatePage(0, 'next');
   }
 </script>
