@@ -1,0 +1,28 @@
+---
+import { Heart } from "lucide-astro";
+const { message = "Con todo mi amor, para siempre tuyo/a" } = Astro.props;
+---
+
+<footer class="relative py-16 text-center">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+  
+  <div class="max-w-md mx-auto px-4">
+    <div class="flex justify-center mb-6">
+      <div class="relative">
+        <Heart class="w-12 h-12 text-pink-500 fill-pink-500/30 animate-pulse" />
+        <Heart class="absolute inset-0 w-12 h-12 text-pink-500/50 animate-ping" />
+      </div>
+    </div>
+    
+    <p 
+      class="text-xl md:text-2xl text-slate-800 mb-4"
+      style="font-family: var(--font-cursive);"
+    >
+      {message}
+    </p>
+    
+    <p class="text-sm text-slate-500">
+      Hecho con 💜 para tu cumpleaños
+    </p>
+  </div>
+</footer>

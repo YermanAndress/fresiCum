@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RomanticHeader from '../components/header.astro';
+import LetterBook from '../components/book.astro';
+import LoveFooter from '../components/footer.astro';
+
+const letters = [
+    {
+        id: 1,
+    title: "Nuestra Primera Carta",
+    date: "14 de Febrero",
+    message: "Aquí comenzó nuestra historia...",
+    imageUrl: "/cartas/carta1.jpeg"
+  },
+  {
+      id: 2,
+    title: "Un Recuerdo Especial",
+    date: "Aniversario",
+    imageUrl: "/cartas/carta2.jpeg",
+  },
+      {
+        id: 3,
+    title: "Nuestra Primera Carta",
+    date: "14 de Febrero",
+    message: "Aquí comenzó nuestra historia...",
+    imageUrl: "/cartas/carta3.jpeg"
+  },
+      {
+        id: 4,
+    title: "Nuestra Primera Carta",
+    date: "14 de Febrero",
+    message: "Aquí comenzó nuestra historia...",
+    imageUrl: "/cartas/carta4.jpeg"
+  },
+      {
+        id: 5,
+    title: "Nuestra Primera Carta",
+    date: "14 de Febrero",
+    message: "Aquí comenzó nuestra historia...",
+    imageUrl: "/cartas/carta5.jpeg"
+  },
+];
+---
+
+<Layout title="Para Ti, Mi Amor">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style is:global>
+    :root {
+      --font-cursive: 'Great Vibes', cursive;
+    }
+    html {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+  </style>
+
+  <div class="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-100/40 via-transparent to-transparent pointer-events-none -z-10"></div>
+
+  <main class="relative z-10">
+    <div class="py-10 md:py-16">
+      <RomanticHeader title="Para Ti, Mi Amor" subtitle="Un libro de cartas escritas con el corazón..." />
+      
+      <section class="px-4 pb-12 md:pb-20">
+        <LetterBook letters={letters} />
+      </section>
+      
+      <LoveFooter message="Con todo mi amor, feliz cumpleaños mi vida" />
+    </div>
+  </main>
+</Layout>
